@@ -10,7 +10,14 @@ import Table, {
 import Paper from 'material-ui/Paper';
 
 
+const interval = [9325, 37950, 91900, 191650, 416700, 418400];
+const rate = [0.1, 0.15, 0.25, 0.28, 0.33, 0.35, 0.3960];
+const fix = [0, 932.5, 5226.25, 18713.75, 46643.75, 120910.25, 121505.25];
+
+
+
 class Individule extends React.Component {
+
 
   render() {
     return (
@@ -62,6 +69,30 @@ class Individule extends React.Component {
               <TableRowColumn>Combined Income</TableRowColumn>
               {this.props.data.map((item, key) =>{
                 return <TableRowColumn key={key}>{item.total}</TableRowColumn>
+              })}
+            </TableRow>
+            <TableRow>
+              <TableRowColumn style={{color: 'red'}}>Tax</TableRowColumn>
+              {this.props.data.map((item, key) =>{
+                let timingStr = item.start_date.slice(0, 4);
+                let diff = parseInt(timingStr) - this.props.startingDate;
+                let map = interval.map(item =>{
+                    return item * Math.pow((1.02), diff);
+                })
+                let taxAmount = this.props.tax(parseFloat(item.total), map, rate, fix);
+                return <TableRowColumn style={{color: 'red'}} key={key}>{taxAmount}</TableRowColumn>
+              })}
+            </TableRow>
+            <TableRow>
+              <TableRowColumn>Net Income</TableRowColumn>
+              {this.props.data.map((item, key) =>{
+                let timingStr = item.start_date.slice(0, 4);
+                let diff = parseInt(timingStr) - this.props.startingDate;
+                let map = interval.map(item =>{
+                    return item * Math.pow((1.02), diff);
+                })
+                let taxAmount = this.props.tax(parseFloat(item.total), map, rate, fix);
+                return <TableRowColumn key={key}>{parseFloat(item.total) - taxAmount}</TableRowColumn>
               })}
             </TableRow>
           </TableBody>

@@ -5,9 +5,8 @@ const PORT = process.env.PORT || 3000;
 const fs = require('fs');
 app.use(express.static(path.join(__dirname, 'build')));
 
-// app.use('/api', api);
 app.get('/', (request, response) => {
-  response.sendFile(__dirname + '/build/index.html'); // For React/Redux
+  response.sendFile(__dirname + '/build/index.html');
 });
 
 app.get('/data', (req, res) => {

@@ -14,7 +14,8 @@ class Table extends React.Component {
       spouse_birthday: 1993,
       join: false,
       start: 0,
-      end: 5
+      end: 5,
+      startingDate: 2017
     }
     this.toggle = this.toggle.bind(this);
     this.preHandler = this.preHandler.bind(this);
@@ -48,7 +49,6 @@ class Table extends React.Component {
     this.setState({
       join: toggle
     })
-    console.log('join is set to ', toggle);
   };
   buttonCreater({
     label,
@@ -64,17 +64,25 @@ class Table extends React.Component {
       />
     )
   }
-
+  tax(income, interval, rate, fix) {
+    let index = interval.length - 1;
+    for (let i = 0; i < interval.length; i++) {
+      let curr = interval[i];
+      if (income < curr) {
+        index = i;
+        break;
+      }
+    }
+    let taxable = index - 1 < 0 ? 0 : interval[index - 1];
+    return (income - taxable) * rate[index] + fix[index];
+  }
   componentDidMount() {
     fetch(`http://localhost:3000/data`)
       .then(data => {
         return data.json();
       })
       .then(data => {
-        // console.log(data);
-        console.log('fetched data successfully');
         let list = JSON.parse(data);
-        // console.log(list);
         this.setState({
           singles: list
         })
@@ -83,8 +91,6 @@ class Table extends React.Component {
       })
     fetch(`http://localhost:3000/dataWithSpouse`)
       .then(data => {
-        console.log('fetched spouses successfully');
-
         return data.json();
       })
       .then(data => {
@@ -104,11 +110,15 @@ class Table extends React.Component {
         data={this.state.spouses.slice(this.state.start, this.state.end)}
         user_birthday={this.state.user_birthday}
         spouse_birthday={this.state.spouse_birthday}
+        tax={this.tax}
+        startingDate={this.state.startingDate}
       />
     } else {
       content = <Individule
         data={this.state.singles.slice(this.state.start, this.state.end)}
         user_birthday={this.state.user_birthday}
+        tax={this.tax}
+        startingDate={this.state.startingDate}
       />
     }
     return (
@@ -117,12 +127,6 @@ class Table extends React.Component {
         : (this.buttonCreater({label: 'Show Family', func: this.toggle}))}
         <br />
         <br />
-        {/* <Individule
-          data={this.state.join ? this.state.singles.slice(this.state.start, this.state.end)
-            : }
-          user_birthday={this.state.user_birthday}
-          spouse_birthday={this.state.spouse_birthday}
-        /> */}
         {content}
         <br />
         {this.buttonCreater({icon: (<i className="material-icons">keyboard_arrow_left</i>), func: this.preHandler})}

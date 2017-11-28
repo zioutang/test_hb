@@ -14627,7 +14627,8 @@ var Table = function (_React$Component) {
       spouse_birthday: 1993,
       join: false,
       start: 0,
-      end: 5
+      end: 5,
+      startingDate: 2017
     };
     _this.toggle = _this.toggle.bind(_this);
     _this.preHandler = _this.preHandler.bind(_this);
@@ -14686,6 +14687,20 @@ var Table = function (_React$Component) {
       });
     }
   }, {
+    key: 'tax',
+    value: function tax(income, interval, rate, fix) {
+      var index = interval.length - 1;
+      for (var i = 0; i < interval.length; i++) {
+        var curr = interval[i];
+        if (income < curr) {
+          index = i;
+          break;
+        }
+      }
+      var taxable = index - 1 < 0 ? 0 : interval[index - 1];
+      return (income - taxable) * rate[index] + fix[index];
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       var _this2 = this;
@@ -14724,12 +14739,16 @@ var Table = function (_React$Component) {
         content = _react2.default.createElement(_Family2.default, {
           data: this.state.spouses.slice(this.state.start, this.state.end),
           user_birthday: this.state.user_birthday,
-          spouse_birthday: this.state.spouse_birthday
+          spouse_birthday: this.state.spouse_birthday,
+          tax: this.tax,
+          startingDate: this.state.startingDate
         });
       } else {
         content = _react2.default.createElement(_Individule2.default, {
           data: this.state.singles.slice(this.state.start, this.state.end),
-          user_birthday: this.state.user_birthday
+          user_birthday: this.state.user_birthday,
+          tax: this.tax,
+          startingDate: this.state.startingDate
         });
       }
       return _react2.default.createElement(
@@ -14868,6 +14887,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var interval = [18650, 75900, 153100, 233350, 416700, 470700];
+var rate = [0.1, 0.15, 0.25, 0.28, 0.33, 0.35, 0.3960];
+var fix = [0, 1865, 10452.50, 29752.50, 52222.50, 112728, 131628];
 
 var Family = function (_React$Component) {
   _inherits(Family, _React$Component);
@@ -15087,6 +15110,50 @@ var Family = function (_React$Component) {
                     item.total
                   );
                 })
+              ),
+              _react2.default.createElement(
+                _Table.TableRow,
+                null,
+                _react2.default.createElement(
+                  _Table.TableRowColumn,
+                  { style: { color: 'red' } },
+                  'Tax'
+                ),
+                this.props.data.map(function (item, key) {
+                  var timingStr = item.start_date.slice(0, 4);
+                  var diff = parseInt(timingStr) - _this2.props.startingDate;
+                  var map = interval.map(function (item) {
+                    return item * Math.pow(1.02, diff);
+                  });
+                  var taxAmount = _this2.props.tax(parseFloat(item.total), map, rate, fix);
+                  return _react2.default.createElement(
+                    _Table.TableRowColumn,
+                    { style: { color: 'red' }, key: key },
+                    taxAmount
+                  );
+                })
+              ),
+              _react2.default.createElement(
+                _Table.TableRow,
+                null,
+                _react2.default.createElement(
+                  _Table.TableRowColumn,
+                  null,
+                  'Net Income'
+                ),
+                this.props.data.map(function (item, key) {
+                  var timingStr = item.start_date.slice(0, 4);
+                  var diff = parseInt(timingStr) - _this2.props.startingDate;
+                  var map = interval.map(function (item) {
+                    return item * Math.pow(1.02, diff);
+                  });
+                  var taxAmount = _this2.props.tax(parseFloat(item.total), map, rate, fix);
+                  return _react2.default.createElement(
+                    _Table.TableRowColumn,
+                    { key: key },
+                    parseFloat(item.total) - taxAmount
+                  );
+                })
               )
             )
           )
@@ -15132,6 +15199,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var interval = [9325, 37950, 91900, 191650, 416700, 418400];
+var rate = [0.1, 0.15, 0.25, 0.28, 0.33, 0.35, 0.3960];
+var fix = [0, 932.5, 5226.25, 18713.75, 46643.75, 120910.25, 121505.25];
 
 var Individule = function (_React$Component) {
   _inherits(Individule, _React$Component);
@@ -15263,6 +15334,50 @@ var Individule = function (_React$Component) {
                     _Table.TableRowColumn,
                     { key: key },
                     item.total
+                  );
+                })
+              ),
+              _react2.default.createElement(
+                _Table.TableRow,
+                null,
+                _react2.default.createElement(
+                  _Table.TableRowColumn,
+                  { style: { color: 'red' } },
+                  'Tax'
+                ),
+                this.props.data.map(function (item, key) {
+                  var timingStr = item.start_date.slice(0, 4);
+                  var diff = parseInt(timingStr) - _this2.props.startingDate;
+                  var map = interval.map(function (item) {
+                    return item * Math.pow(1.02, diff);
+                  });
+                  var taxAmount = _this2.props.tax(parseFloat(item.total), map, rate, fix);
+                  return _react2.default.createElement(
+                    _Table.TableRowColumn,
+                    { style: { color: 'red' }, key: key },
+                    taxAmount
+                  );
+                })
+              ),
+              _react2.default.createElement(
+                _Table.TableRow,
+                null,
+                _react2.default.createElement(
+                  _Table.TableRowColumn,
+                  null,
+                  'Net Income'
+                ),
+                this.props.data.map(function (item, key) {
+                  var timingStr = item.start_date.slice(0, 4);
+                  var diff = parseInt(timingStr) - _this2.props.startingDate;
+                  var map = interval.map(function (item) {
+                    return item * Math.pow(1.02, diff);
+                  });
+                  var taxAmount = _this2.props.tax(parseFloat(item.total), map, rate, fix);
+                  return _react2.default.createElement(
+                    _Table.TableRowColumn,
+                    { key: key },
+                    parseFloat(item.total) - taxAmount
                   );
                 })
               )
