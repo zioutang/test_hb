@@ -7,21 +7,22 @@ module.exports = {
     filename: 'app.bundle.js'
   },
   module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['es2015', 'react']
-          }
+    rules: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['es2015', 'react']
         }
       }
-    ]
+    }]
   },
   stats: {
     colors: true
+  },
+  node: {
+    fs: "empty"
   },
   devtool: 'source-map'
 };

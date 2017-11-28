@@ -1,25 +1,16 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Table from './Components/Table';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-const dummyData = ['new york', 'seattle', 'L.A'];
+const App = () => (
+  <MuiThemeProvider>
+    <Table />
+  </MuiThemeProvider>
+);
 
 
-class TodoList extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-  render () {
-    return (
-      <div>
-      <p>Helo</p>
-      <ul>
-        {dummyData.map((task, i) => <li key={i}> {task} </li>)}
-      </ul>
-    </div>
-    )
-  }
-}
-
-ReactDOM.render(<TodoList/>,
-   document.getElementById('root'));
+ReactDOM.render(
+  <App/>,
+  document.getElementById('root')
+);
