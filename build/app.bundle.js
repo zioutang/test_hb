@@ -14670,7 +14670,6 @@ var Table = function (_React$Component) {
       this.setState({
         join: toggle
       });
-      console.log('join is set to ', toggle);
     }
   }, {
     key: 'buttonCreater',
@@ -14705,22 +14704,17 @@ var Table = function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      fetch('http://localhost:3000/data').then(function (data) {
+      fetch('https://localhost:3000/data').then(function (data) {
         return data.json();
       }).then(function (data) {
-        // console.log(data);
-        console.log('fetched data successfully');
         var list = JSON.parse(data);
-        // console.log(list);
         _this2.setState({
           singles: list
         });
       }).catch(function (err) {
         console.log('err: ', err);
       });
-      fetch('http://localhost:3000/dataWithSpouse').then(function (data) {
-        console.log('fetched spouses successfully');
-
+      fetch('https://localhost:3000/dataWithSpouse').then(function (data) {
         return data.json();
       }).then(function (data) {
         var arr = JSON.parse(data);
