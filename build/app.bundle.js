@@ -14704,20 +14704,20 @@ var Table = function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      fetch('https://localhost:3000/data').then(function (data) {
+      fetch('http://localhost:3000/data').then(function (data) {
         return data.json();
       }).then(function (data) {
-        var list = JSON.parse(data);
+        var list = data;
         _this2.setState({
           singles: list
         });
       }).catch(function (err) {
         console.log('err: ', err);
       });
-      fetch('https://localhost:3000/dataWithSpouse').then(function (data) {
+      fetch('http://localhost:3000/dataWithSpouse').then(function (data) {
         return data.json();
       }).then(function (data) {
-        var arr = JSON.parse(data);
+        var arr = data;
         _this2.setState({
           spouses: arr
         });

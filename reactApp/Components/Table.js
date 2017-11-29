@@ -77,24 +77,24 @@ class Table extends React.Component {
     return (income - taxable) * rate[index] + fix[index];
   }
   componentDidMount() {
-    fetch(`https://localhost:3000/data`)
+    fetch(`http://localhost:3000/data`)
       .then(data => {
         return data.json();
       })
       .then(data => {
-        let list = JSON.parse(data);
+        let list = data
         this.setState({
           singles: list
         })
       }).catch(err => {
         console.log('err: ', err);
-      })
-    fetch(`https://localhost:3000/dataWithSpouse`)
+      });
+    fetch(`http://localhost:3000/dataWithSpouse`)
       .then(data => {
         return data.json();
       })
       .then(data => {
-        let arr = JSON.parse(data);
+        let arr = data
         this.setState({
           spouses: arr
         })

@@ -3,7 +3,8 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
-const fs = require('fs');
+const axios = require('axios');
+
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('/', (request, response) => {
@@ -11,17 +12,22 @@ app.get('/', (request, response) => {
 });
 
 app.get('/data', (req, res) => {
-  var data = fs.readFileSync('./data/JCD5zR6X.json', {
-    encoding: 'utf8'
-  });
-  res.json(data);
+  axios(`https://pastebin.com/raw/JCD5zR6X`)
+    .then(data => {
+      res.json(data.data);
+    }).catch(err => {
+      console.log('err: ', err);
+    })
 })
 app.get('/dataWithSpouse', (req, res) => {
-  var data = fs.readFileSync('./data/income_json_sample.json', {
-    encoding: 'utf8'
-  });
-  res.json(data);
+  axios(`https://pastebin.com/raw/8KmXcj51`)
+    .then(data => {
+      res.json(data.data);
+    }).catch(err => {
+      console.log('err: ', err);
+    })
 })
+
 app.listen(PORT, error => {
   error
     ?
