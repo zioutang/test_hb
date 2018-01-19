@@ -10,4 +10,4 @@ npm install
 npm start
 ```
 Then open [`localhost:3000`](http://localhost:3000) in a browser.
-Demo can be found [here](https://docs.google.com/document/d/1OcJMF3P0PgOhAVGDNxXDt3XvMoNH5x5m6kVpnXAhJjw/edit)
+Demo can be found [here](https://stark-plateau-60746.herokuapp.com/)
