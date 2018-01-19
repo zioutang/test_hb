@@ -77,7 +77,7 @@ class Table extends React.Component {
     return (income - taxable) * rate[index] + fix[index];
   }
   componentDidMount() {
-    fetch(`http://localhost:3000/data`)
+    fetch(`https://stark-plateau-60746.herokuapp.com/data`)
       .then(data => {
         return data.json();
       })
@@ -89,7 +89,7 @@ class Table extends React.Component {
       }).catch(err => {
         console.log('err: ', err);
       });
-    fetch(`http://localhost:3000/dataWithSpouse`)
+    fetch(`https://stark-plateau-60746.herokuapp.com/dataWithSpouse`)
       .then(data => {
         return data.json();
       })
