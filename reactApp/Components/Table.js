@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import FlatButton from 'material-ui/FlatButton';
 import Individule from './Individule';
-import Family from './Family'
+import Family from './Family';
+const URL = 'http://localhost:3000';
 class Table extends React.Component {
   constructor(props) {
     super(props);
@@ -77,7 +78,7 @@ class Table extends React.Component {
     return (income - taxable) * rate[index] + fix[index];
   }
   componentDidMount() {
-    fetch(`https://stark-plateau-60746.herokuapp.com/data`)
+    fetch(`${URL}/data`)
       .then(data => {
         return data.json();
       })
@@ -89,7 +90,7 @@ class Table extends React.Component {
       }).catch(err => {
         console.log('err: ', err);
       });
-    fetch(`https://stark-plateau-60746.herokuapp.com/dataWithSpouse`)
+    fetch(`${URL}/dataWithSpouse`)
       .then(data => {
         return data.json();
       })

@@ -4,7 +4,6 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const axios = require('axios');
-
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('/', (request, response) => {
